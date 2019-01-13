@@ -167,3 +167,10 @@ print(list(zip(*matrix)))
 
 # Tuples: Immutable
 # Set, Dictionaries
+
+import json
+l = [2,3,4,5]
+f = open("myfile.txt",'r')
+#json.dump(l,f)
+#f.close()
+x = json.load(f)
