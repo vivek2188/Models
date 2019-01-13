@@ -67,3 +67,74 @@ while a<20:
 	print(a,end=" ")
 	a, b = b, a+b
 print()
+
+# if - elif - else statements
+x = int(input("Enter a number: "))
+if x>0:
+	print("{} is greater than zero".format(x))
+elif x<0:
+	print("{} is less than zero".format(x))
+else:
+	print("{} is equal to zero".format(x))
+
+# for Loop
+print("List: ",end="")
+for val in list1:
+	print(val,end=" ")
+print()
+print("List: ",end="")
+for idx in range(len(list1)):
+	print(list1[idx],end=" ")
+print()
+print("List: ",end="")
+for idx, val in enumerate(list1):
+	print("({},{})".format(idx,val),end=" ")
+print()
+print('------------------------------')
+# Another variation of range are: range(start,end), range(start, end, increment)
+# list(range(4)) = [0, 1, 2, 3]
+# break and continue statements as in C++ and C
+
+# pass Statement
+def setnum():
+	pass
+class abstract_class:
+	pass
+
+# Functions
+def fib(n):	# Returns None
+	a, b = 0, 1
+	while a < n:
+		print(a,end=" ")
+		a, b = b, a+b
+	print()
+
+def fib_variation(n):
+	res = []
+	a, b = 0, 1
+	while a < n:
+		res.append(a)
+		a, b = b, a+b
+	return res
+
+#print(fib_variation(10))
+# default arguments, keyword arguments
+def arguments(kind, *args, **kwargs):
+	print("Arguments: ")
+	print("-> Your kind:",kind)
+	for arg in args:
+		print('->', arg)
+	for k, v in kwargs.items():
+		print('->',k,':',v)
+
+arguments("human", "I am a student", "I live in Dhanbad", fav_animal="dog")
+
+def concatenate(*args, sep=":"):
+	return sep.join(args)
+
+print(concatenate("vivek","tiwari",sep = '.'))
+# fun_name.__doc__ and fun_name.__annotations__
+def make_incrementor(n):
+	return lambda x: x + n
+f = make_incrementor(10)
+print('------------------------------')
