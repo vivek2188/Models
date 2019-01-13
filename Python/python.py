@@ -52,10 +52,17 @@ print('------------------------------')
 
 # Lists: It is a mutable, compound datatype
 list1 = [3, 'name', 2, 4.7]
+list1.append(6)
+list1.extend(['come','home'])
+list1.insert(1,'okay')
+#list1.remove() # first occurence of x
+list1.pop() # last item or element at that index
 print("Compound list: {}".format(list1))
 list1 = list1 + [1, 2, 4]
 print("Compound list: {}".format(list1))
 print("Lenght: {}".format(len(list1)))
+list1.clear()
+# .count(x), .sort(key,reverse), .reverse, .copy
 print('------------------------------')
 # It also supports zero based, -1 based indexing and slicing operations
 
@@ -138,3 +145,25 @@ def make_incrementor(n):
 	return lambda x: x + n
 f = make_incrementor(10)
 print('------------------------------')
+
+# List comprehensions
+squares = [x**2 for x in range(1,10)]
+l = [(x,y) for x in range(1,5) for y in range(2,5) if x != y]
+freshfruit = ['  banana', '  loganberry ', 'passion fruit  ']
+fruits = [fruit.strip() for fruit in freshfruit]
+k = [-4,-3,-2,-1,0]
+k = [abs(i) for i in k]
+
+from math import pi
+pi_list = [round(pi,i) for i in range(1,5)]
+print(pi_list)
+
+matrix = [
+	[1,11,43],
+	[2,7,4],
+	[3,0,8],
+]
+print(list(zip(*matrix)))
+
+# Tuples: Immutable
+# Set, Dictionaries
