@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 def getData(filename):
     dataset = pd.read_csv(filename)
@@ -43,12 +44,5 @@ class LinearRegression:
     
 
 if __name__ == "__main__":
-    X, y = getData("Salary_Data.csv")
+    X, y = getData("50_Startups.csv")
     m = X.shape[0] # Number of training examples
-
-    #Adding intercept column
-    X = np.hstack([np.ones((m,1)), X])
-    
-    lr = LinearRegression()
-    lr.fit(X, y)
-    y_pred = lr.predict(X)
