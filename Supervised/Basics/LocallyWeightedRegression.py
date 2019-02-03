@@ -13,7 +13,7 @@ def create_sine_data(min_x, max_x, n_datapoints = 300):
 # LOCALLY WEIGHTED REGRESSION: An example of non-parametric learning algorithm
 class LWregressor:
 
-    def __init__(self, max_iter = 1000, learning_rate = 0.01, bandwidth_parameter = 10):
+    def __init__(self, max_iter = 1000, learning_rate = 0.01, bandwidth_parameter = 5):
         self.max_iter = max_iter
         self.learning_rate = learning_rate
         self.bandwidth_parameter = bandwidth_parameter
@@ -62,14 +62,17 @@ class LWregressor:
             if x is None:
                 print("ERROR: Input not provided")
                 return
-            self._all_considered = np.square(np.array(x) - self.X) / (2 * self.bandwidth_parameter * self.bandwidth_parameter)
-            self._all_considered = np.exp(self._all_considered)
-
-            self.normal_equation()
-            y_pred = np.matmul(x, self.theta)
             
-            plt.scatter(x[1], y_pred, s = 5, color = "blue")
-            plt.title("Locally Weighted Regression (for blue datapoint)")
+            t = np.array(x) - self.X
+            self._all_considered =  - np.matmul(t, t.T) / (2 * self.bandwidth_parameter * self.bandwidth_parameter)
+            self._all_considered = np.exp(self._all_considered)
+            self.W = np.multiply(self._all_considered, self.mask)
+            
+            self.normal_equation()
+            y_pred = np.matmul(X, self.theta)
+            
+            plt.plot(X[:, 1], y_pred, color = "blue")
+            plt.title("Locally Weighted Regression (bandwidth parameter = {})".format(self.bandwidth_parameter))
         else:
             print("ERROR: Enter valid \"plot\" parameter")
             return
@@ -90,6 +93,6 @@ if __name__ == "__main__":
     
     print("Input Shape: {}".format(X.shape))
     print("Ouput Shape: {}".format(y.shape))
-    lr = LWregressor()
+    lr = LWregressor(bandwidth_parameter = 0.502)
     lr.fit(X, y)
-    lr.plot(x = X[100], plot = "weighted")
+    lr.plot(x = X[0], plot = "weighted")
