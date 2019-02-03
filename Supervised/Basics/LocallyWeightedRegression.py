@@ -13,9 +13,10 @@ def create_sine_data(min_x, max_x, n_datapoints = 300):
 # LOCALLY WEIGHTED REGRESSION: An example of non-parametric learning algorithm
 class LWregressor:
 
-    def __init__(self, max_iter = 1000, learning_rate = 0.01):
+    def __init__(self, max_iter = 1000, learning_rate = 0.01, bandwidth_parameter = 10):
         self.max_iter = max_iter
         self.learning_rate = learning_rate
+        self.bandwidth_parameter = bandwidth_parameter
         
         self.J = list()
 
@@ -46,22 +47,37 @@ class LWregressor:
         self._all_considered = np.ones(self.m)
         self.W = np.multiply(self._all_considered, self.mask)
 
-    def unweighted_plot(self):
-        self._all_considered = np.ones(self.m)
-        self.W = np.multiply(self._all_considered, self.mask)
+    def plot(self, x = None, plot = "unweighted"):
+        if plot == "unweighted":
+            self._all_considered = np.ones(self.m)
+            self.W = np.multiply(self._all_considered, self.mask)
+
+            self.normal_equation() 
+            y_pred = np.matmul(self.X, self.theta)
         
-        # Compute Optimal Theta
-        self.normal_equation()
-        
-        # Compute target variable
-        y_pred = np.matmul(self.X, self.theta)
+            plt.plot(self.X[:, 1], y_pred, color = "green")
+            plt.title("Linear (Unweighted) Regression using Normal Equation")
+            
+        elif plot == "weighted":
+            if x is None:
+                print("ERROR: Input not provided")
+                return
+            self._all_considered = np.square(np.array(x) - self.X) / (2 * self.bandwidth_parameter * self.bandwidth_parameter)
+            self._all_considered = np.exp(self._all_considered)
+
+            self.normal_equation()
+            y_pred = np.matmul(x, self.theta)
+            
+            plt.scatter(x[1], y_pred, s = 5, color = "blue")
+            plt.title("Locally Weighted Regression (for blue datapoint)")
+        else:
+            print("ERROR: Enter valid \"plot\" parameter")
+            return
         
         # Visualize the data
-        plt.scatter(self.X[:, 1], self.y, s = 5, color = "red")
-        plt.plot(self.X[:, 1], y_pred, color = "green")
-        plt.title("Linear (Unweighted) Regression using Normal Equation")
         plt.xlabel("Input Feature")
         plt.ylabel("Predicted Value")
+        plt.scatter(self.X[:, 1], self.y, s = 5, color = "red")
         plt.show()
     
     def predict(self, X):
@@ -72,8 +88,8 @@ if __name__ == "__main__":
     X, y = create_sine_data(-20, 20)
     X = np.hstack([np.ones((len(X), 1)), X])   # Intercept Column
     
-    print(X.shape)
-    print(y.shape)
+    print("Input Shape: {}".format(X.shape))
+    print("Ouput Shape: {}".format(y.shape))
     lr = LWregressor()
     lr.fit(X, y)
-    lr.unweighted_plot()
+    lr.plot(x = X[100], plot = "weighted")
