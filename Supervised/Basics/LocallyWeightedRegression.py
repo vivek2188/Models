@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from numpy.linalg import pinv as pseudo_inverse
 
 def create_sine_data(min_x, max_x, n_datapoints = 300):
     X = np.linspace(min_x, max_x, n_datapoints)
@@ -29,7 +30,12 @@ class LWregressor:
         else:
             pass
         return grad
-
+    
+    def normal_equation(self):
+        _inverse = pseudo_inverse(np.matmul(np.matmul(self.X.T, self.W), X))
+        _other = np.matmul(np.matmul(self.X.T, self.W), y)
+        self.theta = np.matmul(_inverse, _other)
+    
     def fit(self, X, y):
         self.X = X
         self.y = y
