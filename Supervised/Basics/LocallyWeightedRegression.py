@@ -46,6 +46,24 @@ class LWregressor:
         self._all_considered = np.ones(self.m)
         self.W = np.multiply(self._all_considered, self.mask)
 
+    def unweighted_plot(self):
+        self._all_considered = np.ones(self.m)
+        self.W = np.multiply(self._all_considered, self.mask)
+        
+        # Compute Optimal Theta
+        self.normal_equation()
+        
+        # Compute target variable
+        y_pred = np.matmul(self.X, self.theta)
+        
+        # Visualize the data
+        plt.scatter(self.X[:, 1], self.y, s = 5, color = "red")
+        plt.plot(self.X[:, 1], y_pred, color = "green")
+        plt.title("Linear (Unweighted) Regression using Normal Equation")
+        plt.xlabel("Input Feature")
+        plt.ylabel("Predicted Value")
+        plt.show()
+    
     def predict(self, X):
         pass
     
@@ -58,4 +76,4 @@ if __name__ == "__main__":
     print(y.shape)
     lr = LWregressor()
     lr.fit(X, y)
-    lr.predict([0])
+    lr.unweighted_plot()
