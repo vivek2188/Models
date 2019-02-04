@@ -16,8 +16,6 @@ class LWregressor:
     def __init__(self, bandwidth_parameter = 5):
         self.bandwidth_parameter = bandwidth_parameter
         
-        self.J = list()
-        
     def normal_equation(self):
         _inverse = pseudo_inverse(np.matmul(np.matmul(self.X.T, self.W), self.X))
         _other = np.matmul(np.matmul(self.X.T, self.W), self.y)
@@ -39,34 +37,35 @@ class LWregressor:
             self.W = np.multiply(self._all_considered, self.mask)
 
             self.normal_equation() 
-            self.y_pred = np.matmul(self.X, self.theta)
-        
-            plt.plot(self.X[:, 1], self.y_pred, color = "green")
-            plt.title("Linear (Unweighted) Regression using Normal Equation")
-            
+            y_pred = np.matmul(self.X, self.theta)
+
         elif type_reg == "weighted":
             if x is None:
                 print("ERROR: Input not provided")
                 return
-            
+
             t = np.array(x) - self.X
+            t = t[:, 1:]
             self._all_considered =  - np.matmul(t, t.T) / (2 * self.bandwidth_parameter * self.bandwidth_parameter)
+            self._all_considered[self._all_considered > 709] = 709 # Dealing with overflows
             self._all_considered = np.exp(self._all_considered)
             self.W = np.multiply(self._all_considered, self.mask)
-            
+
             self.normal_equation()
-            self.y_pred = np.matmul(X, self.theta)
-            
-            plt.plot(X[:, 1], self.y_pred, color = "blue")
-            plt.title("Locally Weighted Regression (bandwidth parameter = {})".format(self.bandwidth_parameter))
+            y_pred = np.matmul(x, self.theta)
+
         else:
             print("ERROR: Enter valid \"plot\" parameter")
             return
 
-    def visualize(self):
-        plt.xlabel("Input Feature")
-        plt.ylabel("Predicted Value")
-        plt.scatter(self.X[:, 1], self.y, s = 5, color = "red")
+        return y_pred
+
+    def visualize(self, X, y, title = "TITLE", xlabel = "Xlabel", ylabel = "Ylabel"):
+        plt.scatter(self.X[:, 1], self.y, s = 6, color = "red")
+        plt.plot(X, y, linewidth = 3, color = "green")
+        plt.title(title)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
         plt.show()
 
         
@@ -78,5 +77,4 @@ if __name__ == "__main__":
     print("Ouput Shape: {}".format(y.shape))
     lr = LWregressor(bandwidth_parameter = 0.502)
     lr.fit(X, y)
-    lr.predict(x = X[0], type_reg = "weighted")
-    lr.visualize()
+    y_pred = lr.predict(x = X[0], type_reg = "weighted")
