@@ -20,7 +20,7 @@ class LWregressor:
         
     def normal_equation(self):
         _inverse = pseudo_inverse(np.matmul(np.matmul(self.X.T, self.W), self.X))
-        _other = np.matmul(np.matmul(self.X.T, self.W), y)
+        _other = np.matmul(np.matmul(self.X.T, self.W), self.y)
         self.theta = np.matmul(_inverse, _other)
     
     def fit(self, X, y):
