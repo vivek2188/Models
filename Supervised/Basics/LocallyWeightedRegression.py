@@ -13,9 +13,7 @@ def create_sine_data(min_x, max_x, n_datapoints = 500):
 # LOCALLY WEIGHTED REGRESSION: An example of non-parametric learning algorithm
 class LWregressor:
 
-    def __init__(self, max_iter = 1000, learning_rate = 0.01, bandwidth_parameter = 5):
-        self.max_iter = max_iter
-        self.learning_rate = learning_rate
+    def __init__(self, bandwidth_parameter = 5):
         self.bandwidth_parameter = bandwidth_parameter
         
         self.J = list()
@@ -66,7 +64,6 @@ class LWregressor:
             return
 
     def visualize(self):
-        # Visualize the data
         plt.xlabel("Input Feature")
         plt.ylabel("Predicted Value")
         plt.scatter(self.X[:, 1], self.y, s = 5, color = "red")
