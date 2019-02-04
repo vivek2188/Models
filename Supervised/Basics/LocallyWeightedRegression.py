@@ -33,18 +33,18 @@ class LWregressor:
         self._all_considered = np.ones(self.m)
         self.W = np.multiply(self._all_considered, self.mask)
 
-    def predict(self, x = None, plot = "unweighted"):
-        if plot == "unweighted":
+    def predict(self, x = None, type_reg = "unweighted"):
+        if type_reg == "unweighted":
             self._all_considered = np.ones(self.m)
             self.W = np.multiply(self._all_considered, self.mask)
 
             self.normal_equation() 
             self.y_pred = np.matmul(self.X, self.theta)
         
-            plt.plot(self.X[:, 1], self.y_pred, color = "green")
+            plt.type_reg(self.X[:, 1], self.y_pred, color = "green")
             plt.title("Linear (Unweighted) Regression using Normal Equation")
             
-        elif plot == "weighted":
+        elif type_reg == "weighted":
             if x is None:
                 print("ERROR: Input not provided")
                 return
@@ -78,5 +78,5 @@ if __name__ == "__main__":
     print("Ouput Shape: {}".format(y.shape))
     lr = LWregressor(bandwidth_parameter = 0.502)
     lr.fit(X, y)
-    lr.predict(x = X[0], plot = "weighted")
+    lr.predict(x = X[0], type_reg = "weighted")
     lr.visualize()
