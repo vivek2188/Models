@@ -41,7 +41,7 @@ class LWregressor:
             self.normal_equation() 
             self.y_pred = np.matmul(self.X, self.theta)
         
-            plt.type_reg(self.X[:, 1], self.y_pred, color = "green")
+            plt.plot(self.X[:, 1], self.y_pred, color = "green")
             plt.title("Linear (Unweighted) Regression using Normal Equation")
             
         elif type_reg == "weighted":
