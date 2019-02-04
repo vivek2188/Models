@@ -19,14 +19,14 @@ class LWregressor:
         self.J = list()
         
     def normal_equation(self):
-        _inverse = pseudo_inverse(np.matmul(np.matmul(self.X.T, self.W), X))
+        _inverse = pseudo_inverse(np.matmul(np.matmul(self.X.T, self.W), self.X))
         _other = np.matmul(np.matmul(self.X.T, self.W), y)
         self.theta = np.matmul(_inverse, _other)
     
     def fit(self, X, y):
         self.X = X
         self.y = y
-        self.theta = np.zeros((X.shape[1], 1))
+        self.theta = np.zeros((self.X.shape[1], 1))
         self.m = X.shape[0]
         
         self.mask = np.identity(self.m)
